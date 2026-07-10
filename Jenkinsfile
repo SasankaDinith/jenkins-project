@@ -12,7 +12,7 @@ pipeline {
 
         stage ('setup') {
             steps {
-                sh "pip install -r requirments.txt"
+            
                 echo "The Database IP is : ${DB_HOST}"
             }
         }
