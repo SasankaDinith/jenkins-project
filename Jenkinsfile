@@ -20,7 +20,7 @@ pipeline {
         stage ('Test') {
             steps {
                 sh "ls -ltr"
-                echo "The database username: ${USERNAME} and the password is: ${PASSWORD}"
+                echo "Commit: ${env.GIT_COMMIT}"
             }
         }
     }
