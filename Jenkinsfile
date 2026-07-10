@@ -2,65 +2,26 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "sanjeevkt720/jenkins-flask-app"
-        IMAGE_TAG = "${IMAGE_NAME}:${BUILD_NUMBER}"
+        DB_HOST = '192.168.2.1'
+        USERNAME = 'user1'
+        PASSWORD = 'password123'
     }
 
+ 
     stages {
 
-        stage('Checkout') {
+        stage ('setup') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/kodekloudhub/jenkins-project.git'
-
-                sh 'ls -ltr'
+                sh "pip install -r requirments.txt"
+                echo "The Database IP is : ${DB_HOST}"
             }
         }
 
-        stage('Setup') {
+        stage ('Test') {
             steps {
-                sh 'pip install -r requirements.txt'
+                sh "pytest"
+                echo "The database username: ${USERNAME} and the password is: ${PASSWORD}"
             }
         }
 
-        stage('Test') {
-            steps {
-                sh 'pytest'
-                sh 'whoami'
-            }
-        }
-
-        stage('Login to Docker Hub') {
-            steps {
-                withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'DOCKER_PASSWORD')]) {
-                    sh 'echo $DOCKER_PASSWORD | docker login -u sanjeevkt720 --password-stdin'
-                }
-                echo 'Docker Hub login successful'
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t ${IMAGE_TAG} .'
-                sh 'docker images'
-                echo 'Docker image built successfully'
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                sh 'docker push ${IMAGE_TAG}'
-                echo 'Docker image pushed successfully'
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
-        }
-    }
 }
