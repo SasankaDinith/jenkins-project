@@ -23,5 +23,6 @@ pipeline {
                 echo "The database username: ${USERNAME} and the password is: ${PASSWORD}"
             }
         }
+    }
 
 }
