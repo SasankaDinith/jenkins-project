@@ -21,6 +21,10 @@ pipeline {
             steps {
                 sh "ls -ltr"
                 echo "Commit: ${env.GIT_COMMIT}"
+                echo "Commit: ${env.JENKINS_URL}"
+                echo "Commit: ${env.BUILD_NUMBER}"
+              
+                echo "Commit: ${env.BUILD_TAG}"
             }
         }
     }
