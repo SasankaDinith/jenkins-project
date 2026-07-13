@@ -2,23 +2,21 @@ pipeline {
     agent any
     
     environment {
-        DB_HOST = '192.168.12.1'
-        USERNAME = 'user1'
-        PASSWORD = 'password123'
+         SERVER_CREDS = credentials('server-creds')
 
     }
      
     stages {
         stage('Setup') {
             steps {
-               
-                echo "The database IP is: ${DB_HOST}" 
+                echo "My creds: ${SERVER_CREDS}"
+                echo "My creds: ${SERVER_CREDS_USR}"
+                echo "My creds: ${SERVER_CREDS_PSW}"
             }
         }
         stage('Test') {
             steps {
-               
-                echo "The DB username: ${USERNAME} and the password is: ${PASSWORD}"
+                sh "pytest"                
             }
         }
     }
